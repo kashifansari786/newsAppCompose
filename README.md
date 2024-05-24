@@ -2,6 +2,7 @@
 
 A modern news app built with Jetpack Compose and a clean architecture using MVVM. The app supports local data storage with DataStore Preferences and Room Database, dependency injection with Dagger Hilt, network requests with Retrofit, and efficient data loading with Paging 3 library. Users can search for news and bookmark articles to read later.
 
+![Home Screen](screenshots/home_screen.png)
 ## Key Features
 
 - **Modern UI with Jetpack Compose**: Provides a responsive and intuitive user interface.
