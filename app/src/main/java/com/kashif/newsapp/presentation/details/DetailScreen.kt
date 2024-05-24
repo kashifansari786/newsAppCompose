@@ -31,9 +31,12 @@ import com.kashif.newsapp.R
  */
 
 @Composable
-fun DetailScreen(article:Article,
-                 event:(DetailsEvent)->Unit,
-                 navigateUp:()->Unit){
+fun DetailScreen(
+    article: Article,
+    event: (DetailsEvent) -> Unit,
+    navigateUp: () -> Unit,
+    updateInternetConnectivity: Boolean
+){
 
     val context= LocalContext.current
     Column(modifier = Modifier

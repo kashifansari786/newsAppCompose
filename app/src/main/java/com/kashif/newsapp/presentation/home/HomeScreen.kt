@@ -25,7 +25,6 @@ import com.kashif.newsapp.presentation.Dimens
 import com.kashif.newsapp.R
 import com.kashif.newsapp.presentation.common.ArticleList
 import com.kashif.newsapp.presentation.common.SearchBar
-import com.kashif.newsapp.presentation.navGraph.Route
 
 
 /**
@@ -34,9 +33,12 @@ import com.kashif.newsapp.presentation.navGraph.Route
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(articles:LazyPagingItems<Article>,
-               navigateToSearch:()->Unit,
-               navigateToDetails:(Article)->Unit){
+fun HomeScreen(
+    articles: LazyPagingItems<Article>,
+    navigateToSearch: () -> Unit,
+    navigateToDetails: (Article) -> Unit,
+    updateInternetConnectivity: Boolean
+){
     val titles by remember {
         derivedStateOf {
             if(articles.itemCount>10){
@@ -54,12 +56,12 @@ fun HomeScreen(articles:LazyPagingItems<Article>,
         .fillMaxSize()
         .padding(top = Dimens.MediumPadding24)
         .statusBarsPadding()) {
-        Image(painter = painterResource(id = R.drawable.ic_launcher_background),
+        Image(painter = painterResource(id = R.drawable.news_logo),
             contentDescription =null, 
             modifier = Modifier
                 .width(Dimens.ImageWidth)
                 .height(Dimens.ImageHeight)
-                .padding(horizontal = Dimens.MediumPadding24))
+                )
         Spacer(modifier = Modifier.height(Dimens.MediumPadding24))
         SearchBar(modifier = Modifier.padding(horizontal = Dimens.SmallIconSize),
             text = "",
@@ -76,11 +78,10 @@ fun HomeScreen(articles:LazyPagingItems<Article>,
             fontSize = Dimens.FontSize,
             color = colorResource(id = R.color.placeholder))
         Spacer(modifier = Modifier.height(Dimens.MediumPadding24))
-        ArticleList(
-            articles = articles,
-            modifier = Modifier.padding(horizontal = Dimens.MediumPadding24),
-            onClick = {
-                navigateToDetails(it)
-            })
+        ArticleList(articles = articles,
+            onClick = {navigateToDetails(it)},
+            updateInternetConnectivity = updateInternetConnectivity,
+            modifier = Modifier.padding(horizontal = Dimens.MediumPadding24))
+
     }
 }

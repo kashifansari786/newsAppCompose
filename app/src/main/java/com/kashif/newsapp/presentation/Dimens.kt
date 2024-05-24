@@ -19,7 +19,7 @@ object Dimens {
     val ShimmerBoxHeight=30.dp
     val ShimmerSmallBoxHeight=15.dp
     val ImageWidth=150.dp
-    val ImageHeight=30.dp
+    val ImageHeight=50.dp
     val Border=1.dp
     val IconSize=20.dp
     val FontSize=12.sp

@@ -3,7 +3,7 @@
 
     <style name="App.Starting.Theme" parent="Theme.SplashScreen">
         <item name="android:windowSplashScreenBackground">#FFF</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/news_logo</item>
         <item name="postSplashScreenTheme">@style/Theme.NewsApp</item>
     </style>
 </resources>

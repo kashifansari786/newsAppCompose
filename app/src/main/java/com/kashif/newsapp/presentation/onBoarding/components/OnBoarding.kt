@@ -37,12 +37,12 @@ fun OnBoarding(
             contentScale = ContentScale.Crop)
         Spacer(modifier = Modifier.height(Dimens.MediumPadding24))
         Text(text = page.title,modifier=Modifier.padding(horizontal = Dimens.MediumPadding30),
-            style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.titleLarge .copy(fontWeight = FontWeight.Bold),
             color = colorResource(id = R.color.display_small
         ))
         Text(text = page.description,modifier=Modifier.padding(horizontal = Dimens.MediumPadding30),
-            style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold),
-            color = colorResource(id = R.color.text_medium
+            style = MaterialTheme.typography.titleMedium,
+            color = colorResource(id = R.color.text_medium_gray
             ))
     }
 }

@@ -24,7 +24,8 @@ import com.kashif.newsapp.presentation.navGraph.Route
 
 @Composable
 fun BookmarkScreen(state:BookmarkState,
-                   navigateToDetails:(Article)->Unit){
+                   navigateToDetails:(Article)->Unit,
+                   updateInternetConnectivity:Boolean){
     Column(modifier = Modifier
         .fillMaxSize()
         .statusBarsPadding()
@@ -36,6 +37,9 @@ fun BookmarkScreen(state:BookmarkState,
             style = MaterialTheme.typography.displayMedium .copy(fontWeight = FontWeight.Bold),
             color = colorResource(id = R.color.text_title))
         Spacer(modifier = Modifier.height(MediumPadding24))
-        ArticleList(articles = state.article, onClick = {navigateToDetails(it)})
+        ArticleList(articles = state.article,
+            onClick = {navigateToDetails(it)},
+            updateInternetConnectivity = updateInternetConnectivity)
+
     }
 }

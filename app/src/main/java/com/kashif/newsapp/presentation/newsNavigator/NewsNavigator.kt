@@ -39,7 +39,8 @@ import com.kashif.newsapp.presentation.search.SearchViewModel
  */
 
 @Composable
-fun NewsNavigator(){
+fun NewsNavigator(updateInternetConnectivity: Boolean) {
+
     val context= LocalContext.current
     val bottomNavigationItems= remember {
         listOf(
@@ -61,6 +62,9 @@ fun NewsNavigator(){
             else->0
         }
     }
+
+
+
     val isBottomBarVisible= remember(key1 = backstackState) {
         backstackState?.destination?.route==Route.HomeScreen.route ||
                 backstackState?.destination?.route==Route.SearchScreen.route ||
@@ -94,33 +98,45 @@ val bottomPadding=it.calculateBottomPadding()
         NavHost(navController = navController,
             startDestination = Route.HomeScreen.route,
             modifier = Modifier.padding(bottom = bottomPadding)){
+
                 composable(route=Route.HomeScreen.route){
+
                     val viewModel:HomeViewModel= hiltViewModel()
-                    val articles=viewModel.news.collectAsLazyPagingItems()
-                    HomeScreen(articles = articles,
-                        navigateToSearch = {
-                            navigateToTop(navController=navController,route=Route.SearchScreen.route)
-                        },
-                        navigateToDetails = {article->
-                            navigateToDetails(navController,article)
-                        })
+
+                        viewModel.state.value.articles?.let {
+                            val articles=it.collectAsLazyPagingItems()
+                            HomeScreen(articles = articles,
+                                navigateToSearch = {
+                                    navigateToTop(navController=navController,route=Route.SearchScreen.route)
+                                },
+                                navigateToDetails = {article->
+                                    navigateToDetails(
+                                        navController,
+                                        article
+                                    )
+                                },updateInternetConnectivity)
+                    }
+
+
                 }
             composable(route = Route.SearchScreen.route){
                 val viewmodel:SearchViewModel= hiltViewModel()
-                val state=viewmodel.state.value
-                SearchScreen(state = state, event = viewmodel::onEvent, naviagateToDetails = {
-                    navigateToDetails(navController, article = it)
-                })
+                    val state=viewmodel.state.value
+                    SearchScreen(state = state, event = viewmodel::onEvent, naviagateToDetails = {
+                        navigateToDetails(navController, article = it)
+                    },updateInternetConnectivity)
+
+
 
             }
             composable(route = Route.DetailsScreen.route){
                 val viewmodel: DetailsViewModel= hiltViewModel()
-                if(viewmodel.sideEffect!=null){
+                if(viewmodel.sideEffect!=null ){
                     Toast.makeText(context,viewmodel.sideEffect,Toast.LENGTH_SHORT).show()
                     viewmodel.onEvent(DetailsEvent.RemoveSideEffect)
                 }
                 navController.previousBackStackEntry?.savedStateHandle?.get<Article?>("article")?.let { article->
-                    DetailScreen(article = article, event = viewmodel::onEvent, navigateUp = {navController.navigateUp()})
+                    DetailScreen(article = article, event = viewmodel::onEvent, navigateUp = {navController.navigateUp()},updateInternetConnectivity)
                 }
             }
             composable(route = Route.BookmarkScreen.route){
@@ -128,10 +144,14 @@ val bottomPadding=it.calculateBottomPadding()
                 val state=viewmodel.state.value
                 BookmarkScreen(state = state, navigateToDetails = {article->
                     navigateToDetails(navController, article)
-                })
+                },updateInternetConnectivity)
             }
         }
     }
+}
+
+fun updateInternetConnectivity(checkConnectivityStatus: Any) {
+
 }
 
 private fun navigateToTop(navController: NavController,route:String){
@@ -146,7 +166,10 @@ private fun navigateToTop(navController: NavController,route:String){
         }
     }
 }
-private fun navigateToDetails(navController: NavController,article: Article){
+private fun navigateToDetails(
+    navController: NavController,
+    article: Article
+){
     navController.currentBackStackEntry?.savedStateHandle?.set("article",article)
     navController.navigate(
         route = Route.DetailsScreen.route

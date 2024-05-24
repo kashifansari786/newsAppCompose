@@ -13,13 +13,17 @@ import com.kashif.newsapp.domain.model.Article
 import com.kashif.newsapp.presentation.Dimens
 import com.kashif.newsapp.presentation.common.ArticleList
 import com.kashif.newsapp.presentation.common.SearchBar
-import com.kashif.newsapp.presentation.navGraph.Route
 
 /**
  * Created by Mohammad Kashif Ansari on 22,May,2024
  */
 @Composable
-fun SearchScreen(state:SearchState,event:(SearchEvents)->Unit,naviagateToDetails:(Article)->Unit){
+fun SearchScreen(
+    state: SearchState,
+    event: (SearchEvents) -> Unit,
+    naviagateToDetails: (Article) -> Unit,
+    updateInternetConnectivity: Boolean
+){
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(
@@ -36,7 +40,9 @@ fun SearchScreen(state:SearchState,event:(SearchEvents)->Unit,naviagateToDetails
         Spacer(modifier = Modifier.height(Dimens.MediumPadding24))
         state.articles?.let { 
             val articles=it.collectAsLazyPagingItems()
-            ArticleList(articles = articles, onClick = {naviagateToDetails(it)})
+            ArticleList(articles = articles,
+                onClick = {naviagateToDetails(it)},
+                updateInternetConnectivity = updateInternetConnectivity)
         }
 
     }

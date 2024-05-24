@@ -8,5 +8,4 @@ import kotlinx.coroutines.flow.Flow
  * Created by Mohammad Kashif Ansari on 22,May,2024
  */
 data class SearchState(val searchQuery:String="",
-    val articles:Flow<PagingData<Article>>?=null) {
-}
+    val articles:Flow<PagingData<Article>>?=null)

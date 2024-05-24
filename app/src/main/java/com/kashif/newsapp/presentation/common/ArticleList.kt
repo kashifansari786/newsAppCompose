@@ -20,10 +20,13 @@ import com.kashif.newsapp.presentation.Dimens
 @Composable
 fun ArticleList(modifier: Modifier= Modifier,
                 articles:List<Article>,
-                onClick:(Article)->Unit){
-        if(articles.isEmpty()){
+                onClick:(Article)->Unit,
+                updateInternetConnectivity: Boolean){
+        if(!updateInternetConnectivity)
             EmptyScreen()
-        }
+        if(articles.isEmpty())
+            EmptyScreen()
+
         LazyColumn(modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(Dimens.MediumPadding24),
             contentPadding = PaddingValues(all=Dimens.ExtraSmallPadding2)
@@ -38,20 +41,25 @@ fun ArticleList(modifier: Modifier= Modifier,
 @Composable
 fun ArticleList(modifier: Modifier= Modifier,
                 articles:LazyPagingItems<Article>,
-                onClick:(Article)->Unit){
-    val handlePagingResult= handlePagingResult(articles = articles)
-    if(handlePagingResult){
-        LazyColumn(modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(Dimens.MediumPadding24),
-            contentPadding = PaddingValues(all=Dimens.ExtraSmallPadding2)
-        ) {
-            items(count = articles.itemCount){
-                articles[it]?.let{
-                    ArticleCard(article = it, onclick = {onClick(it)})
+                onClick:(Article)->Unit,
+                updateInternetConnectivity: Boolean){
+    if(updateInternetConnectivity){
+        val handlePagingResult= handlePagingResult(articles = articles)
+        if(handlePagingResult){
+            LazyColumn(modifier = modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(Dimens.MediumPadding24),
+                contentPadding = PaddingValues(all=Dimens.ExtraSmallPadding2)
+            ) {
+                items(count = articles.itemCount){
+                    articles[it]?.let{
+                        ArticleCard(article = it, onclick = {onClick(it)})
+                    }
                 }
             }
         }
-    }
+    }else
+        EmptyScreen()
+
 
 }
 
